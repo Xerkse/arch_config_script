@@ -10,15 +10,16 @@ sudo pacman -Sy --noconfirm sxiv mpv  \
     zathura zathura-pdf-mupdf ffmpeg \
     imagemagick gimp \
     fzf xclip \
-    zip unzip unrar xdotool brightnessctl  \
-    rsync \
+    zip unzip unrar p7zip \
+    xdotool brightnessctl  \
+    rsync samba nfs-utils \
     firefox \
     xcompmgr dunst \
-    vim neovim npm \
+    vim neovim \
+    npm \
     git github-cli\
     man \
     feh \
-    samba nfs-utils \
     timeshift \
     libx11 libxft libxinerama xorg-xinit xorg-server webkit2gtk \
     pass gnupg pass-otp \
@@ -30,6 +31,8 @@ sudo pacman -Sy --noconfirm sxiv mpv  \
     exfat-utils \
     xorg-xsetroot acpi \
     maim \
+    wget \
+    zbar \
     #mpd ncmpcpp 
 
 git clone --separate-git-dir="$HOME/.git" "https://github.com/Xerkse/configs" "tmpconfigs"
@@ -56,4 +59,5 @@ cd ~ && rm -r yay
 
 #not working, dont know why
 #yay -S ttf-ms-win10-auto
-yay -S espeak
+yay -S espeak \
+    simple-mtpfs 
