@@ -4,6 +4,7 @@ sudo sed -i "s/^  set timeout=5$/  set timeout=2/" /boot/grub/grub.cfg
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 sudo pacman -Sy --noconfirm sxiv mpv  \
+    pacman-contrib \
     pulsemixer \
     torbrowser-launcher \
     lf ueberzug \
@@ -21,7 +22,7 @@ sudo pacman -Sy --noconfirm sxiv mpv  \
     man \
     feh \
     timeshift \
-    libx11 libxft libxinerama xorg-xinit xorg-server webkit2gtk \
+    libx11 libxft libxinerama xorg-xinit xorg-xinput xorg-server webkit2gtk \
     pass gnupg pass-otp \
     bash-completion \
     libreoffiec jre-openjdk \
