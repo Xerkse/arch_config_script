@@ -9,7 +9,7 @@ sudo pacman -Sy --noconfirm sxiv mpv  \
     torbrowser-launcher \
     lf ueberzug \
     zathura zathura-pdf-mupdf ffmpeg \
-    imagemagick gimp \
+    imagemagick gimp darktable\
     fzf xclip \
     zip unzip unrar p7zip \
     xdotool brightnessctl  \
@@ -21,7 +21,7 @@ sudo pacman -Sy --noconfirm sxiv mpv  \
     git github-cli\
     man \
     feh \
-    timeshift \
+    timeshift cronie \
     libx11 libxft libxinerama xorg-xinit xorg-xinput xorg-server webkit2gtk \
     pass gnupg pass-otp \
     bash-completion \
@@ -34,6 +34,8 @@ sudo pacman -Sy --noconfirm sxiv mpv  \
     maim \
     wget \
     zbar \
+    bc \
+    zsh dash \
     #mpd ncmpcpp 
 
 git clone --separate-git-dir="$HOME/.git" "https://github.com/Xerkse/configs" "tmpconfigs"
@@ -62,3 +64,10 @@ cd ~ && rm -r yay
 #yay -S ttf-ms-win10-auto
 yay -S espeak \
     simple-mtpfs 
+
+#timeshift
+sudo systemctl enable cronie.service
+sudo systemctl start cronie.service
+
+#use dash instead of bash for /bin/sh
+sudo ln -sf /bin/dash /bin/sh
