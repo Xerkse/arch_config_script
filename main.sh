@@ -3,13 +3,14 @@ sudo sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.con
 sudo sed -i "s/^  set timeout=5$/  set timeout=2/" /boot/grub/grub.cfg
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-sudo pacman -Sy --noconfirm sxiv mpv  \
+sudo pacman -Sy --noconfirm nsxiv mpv  \
     pacman-contrib \
     pulsemixer \
     torbrowser-launcher \
     lf ueberzug \
     zathura zathura-pdf-mupdf ffmpeg \
     imagemagick gimp darktable\
+    perl-image-esiftool perl-archive-zip \
     fzf xclip \
     zip unzip unrar p7zip \
     xdotool brightnessctl  \
@@ -63,7 +64,8 @@ cd ~ && rm -r yay
 #not working, dont know why
 #yay -S ttf-ms-win10-auto
 yay -S espeak \
-    simple-mtpfs 
+    simple-mtpfs \
+
 
 #timeshift
 sudo systemctl enable cronie.service
