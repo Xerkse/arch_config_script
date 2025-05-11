@@ -7,23 +7,24 @@ sudo sed -i "s/^  set timeout=5$/  set timeout=2/" /boot/grub/grub.cfg && sudo g
 sudo pacman -Sy --noconfirm \
     pulsemixer \
     nsxiv mpv  \
-    pacman-contrib \
     lf ueberzug \
-    zathura zathura-pdf-mupdf ffmpeg \
+    zathura zathura-pdf-mupdf \
+    ffmpeg \
     imagemagick gimp darktable\
     perl-image-exiftool perl-archive-zip \
-    fzf xclip \
+    fzf \
+    xclip \
     zip unzip unrar p7zip \
     xdotool brightnessctl  \
     rsync samba nfs-utils \
     xcompmgr dunst \
-    vim neovim \
+    neovim \
     tree-sitter-cli \
     npm \
     git github-cli\
     man-db \
-    feh \
     timeshift cronie \
+    xss-lock \
     libx11 libxft libxinerama xorg-xinit xorg-xinput xorg-server webkit2gtk xorg-drivers\
     pass gnupg pass-otp \
     bash-completion \
@@ -31,21 +32,27 @@ sudo pacman -Sy --noconfirm \
     newsboat \
     noto-fonts-emoji \
     exfatprogs \
-    xorg-xsetroot acpi \
-    maim \
-    wget \
+    xorg-xsetroot \
+    acpi \
     zbar \
-    base-devel \
     bc \
+    wget \
     zsh dash \
-    torbrowser-launcher firefox \
+    firefox \
     mpd ncmpcpp \
     ttf-liberation-mono-nerd \
+    maim feh \
+    base-devel \
+    reflector \
     || exit
 
     #mpd ncmpcpp 
     #ttf-joypixels 
 
+#get better mirrors
+printf "Updating mirrors, this may take some time"
+sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup \
+    && sudo reflector --latest 200 -age 12 --country "United States",Canada --sort rate --save /etc/pacman.d/mirrorlist --protocol https --download-timeout 15
 #change default shell
 chsh -s "$(which zsh)"
 
