@@ -4,6 +4,9 @@ sudo sed -i "s/^#ParallelDownloads = 5$/ParallelDownloads = 15/" /etc/pacman.con
 
 sudo sed -i "s/^  set timeout=5$/  set timeout=2/" /boot/grub/grub.cfg && sudo grub-mkconfig -o /boot/grub/grub.cfg
 
+mkdir -p "$HOME/Pictures/Screenshots/"
+mkdir -p "$HOME/Pictures/QR/"
+
 sudo pacman -Sy --noconfirm \
     pulsemixer \
     nsxiv mpv  \
@@ -17,7 +20,7 @@ sudo pacman -Sy --noconfirm \
     zip unzip unrar p7zip \
     xdotool brightnessctl  \
     rsync samba nfs-utils \
-    xcompmgr dunst \
+    picom dunst \
     neovim \
     tree-sitter-cli \
     npm \
@@ -26,6 +29,7 @@ sudo pacman -Sy --noconfirm \
     timeshift cronie \
     xss-lock \
     libx11 libxft libxinerama xorg-xinit xorg-xinput xorg-server webkit2gtk xorg-drivers\
+    xorg-xev \
     pass gnupg pass-otp \
     bash-completion \
     libreoffice-fresh jre-openjdk \
@@ -161,48 +165,63 @@ fi
 #     && sudo make -C "$HOME/.local/src/farbfeld" install
 
 #install yay
-git clone https://aur.archlinux.org/yay.git
-cd yay && makepkg -si
-cd "$HOME" && sudo rm -r yay
+if ! command -v yay; then
+    git clone https://aur.archlinux.org/yay.git
+    cd yay && makepkg -si
+    cd "$HOME" && sudo rm -r yay
+fi
 
 #not working, dont know why
 #yay -S ttf-ms-win10-auto
-yay -S espeak \
-    simple-mtpfs \
+yay -S simple-mtpfs \
 
 # slock service
-ln -s "$HOME/.config/x11/services/slock@.service" "/etc/systemd/system/"
-systemctl enable slock@xerkse
+if [ ! -e /etc/systemd/system/slock@.service ]; then
+    ln -s "$HOME/.config/x11/services/slock@.service" "/etc/systemd/system/"
+fi
+
+if [ "$(systemctl is-active slock@xerkse)" != "active" ]; then
+    systemctl enable slock@xerkse
+fi
 
 #timeshift
-sudo systemctl enable cronie.service
-sudo systemctl start cronie.service
+if [ "$(systemctl is-active cronie.service)" != "active" ]; then
+    sudo systemctl enable cronie.service
+    sudo systemctl start cronie.service
+fi
 
 #use dash instead of bash for /bin/sh
-sudo ln -sf /bin/dash /bin/sh
+if [ "$(readlink /bin/sh)" != "/bin/dash" ]; then
+    sudo ln -sf /bin/dash /bin/sh
+fi
 
-#arkenfox userjs
-wget https://raw.github.com/arkenfox/user.js/master/user.js
-wget https://raw.github.com/arkenfox/user.js/master/updater.sh
-wget https://raw.github.com/arkenfox/user.js/master/prefsCleaner.sh
-sudo chmod +x updater.sh
-sudo chmod +x prefsCleaner.sh
-mkdir "$HOME/.config/arkenfox"
-mv user.js "$HOME/.config/arkenfox/"
-mv updater.sh "$HOME/.config/arkenfox/"
-mv prefsCleaner.sh  "$HOME/.config/arkenfox/"
+if [ -d "$HOME/.config/arkenfox" ]; then
+    "$HOME/.config/arkenfox/updater.sh"
+else
+    #arkenfox userjs
+    wget https://raw.github.com/arkenfox/user.js/master/user.js
+    wget https://raw.github.com/arkenfox/user.js/master/updater.sh
+    wget https://raw.github.com/arkenfox/user.js/master/prefsCleaner.sh
+    sudo chmod +x updater.sh
+    sudo chmod +x prefsCleaner.sh
+    mkdir "$HOME/.config/arkenfox"
+    mv user.js "$HOME/.config/arkenfox/"
+    mv updater.sh "$HOME/.config/arkenfox/"
+    mv prefsCleaner.sh  "$HOME/.config/arkenfox/"
 
-#run firefox to get the profiles file loaded so it can be edited
-echo -n "firefox will be killed. Hit Enter." && read -r
-pkill firefox
-firefox -CreateProfile "arkenfox $HOME/.config/arkenfox"
+    #run firefox to get the profiles file loaded so it can be edited
+    echo -n "firefox will be killed. Hit Enter." && read -r
+    pkill firefox
+    firefox -CreateProfile "arkenfox $HOME/.config/arkenfox"
 
-#change arkenfox to default
-echo -n "Firefox will be started. Make arkenfox the default profile. Hit Enter." && read -r
-pkill firefox
-firefox --new-window about:profiles || exit
+    #change arkenfox to default
+    echo -n "Firefox will be started. Make arkenfox the default profile. Hit Enter." && read -r
+    pkill firefox
+    firefox --new-window about:profiles || exit
 
-echo -n "install ublock origin then close. Hit Enter." && read -r
-pkill firefox
-firefox "https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/?utm_source=addons.mozilla.org"
+    echo -n "install ublock origin then close. Hit Enter." && read -r
+    pkill firefox
+    firefox "https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/?utm_source=addons.mozilla.org"
+fi
+
 
