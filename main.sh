@@ -7,10 +7,19 @@ sudo sed -i "s/^  set timeout=5$/  set timeout=2/" /boot/grub/grub.cfg && sudo g
 mkdir -p "$HOME/Pictures/Screenshots/"
 mkdir -p "$HOME/Pictures/QR/"
 
+#remove uninstalled
+paccache -ruk0
+
+#remove old versions
+# paccache -r
+
 sudo pacman -Sy --noconfirm \
+    xss-lock \
+    pacutils \
+    openssh \
     pulsemixer \
     nsxiv mpv  \
-    lf ueberzug \
+    lf ueberzug bat \
     zathura zathura-pdf-mupdf \
     ffmpeg \
     imagemagick gimp darktable\
@@ -48,6 +57,7 @@ sudo pacman -Sy --noconfirm \
     maim feh \
     base-devel \
     reflector \
+    wikiman arch-wiki-docs \
     || exit
 
     #mpd ncmpcpp 
@@ -169,6 +179,8 @@ if ! command -v yay; then
     git clone https://aur.archlinux.org/yay.git
     cd yay && makepkg -si
     cd "$HOME" && sudo rm -r yay
+else
+    yay -Scc
 fi
 
 #not working, dont know why
